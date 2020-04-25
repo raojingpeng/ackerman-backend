@@ -11,8 +11,14 @@ type databaseConfig struct {
 	Dbname   string `mapstructure:"dbname"`
 }
 
+type logConfig struct {
+	LogFilePath string `mapstructure:"logFilePath"`
+	LogFileName string `mapstructure:"logFileName"`
+}
+
 type config struct {
-	Db databaseConfig `mapstructure:"database"`
+	Db  databaseConfig `mapstructure:"database"`
+	Log logConfig      `mapstructure:"log"`
 }
 
 var Conf config

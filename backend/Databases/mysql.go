@@ -7,12 +7,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-type User struct {
-	gorm.Model
-	Code  string
-	Price uint
-}
-
 var DB *gorm.DB
 
 func init() {

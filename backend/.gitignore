@@ -1,5 +1,7 @@
-# Configuration
+# Configuration and other
 *.toml
+.idea
+log
 
 # Binaries for programs and plugins
 *.exe

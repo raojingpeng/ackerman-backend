@@ -1,17 +1,17 @@
 package Router
 
 import (
+	"backend/Middlewares"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
-
-	"backend/Middlewares"
 )
 
 func InitRouter() {
 	router := gin.New()
-	// 跨域中间件
-	router.Use(Middlewares.Cors())
+	router.Use(Middlewares.Cors()) // Cors
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
