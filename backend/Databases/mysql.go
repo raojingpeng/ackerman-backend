@@ -11,8 +11,8 @@ var DB *gorm.DB
 
 func init() {
 	var err error
-	databaseUrl := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",
-		Config.Conf.Db.User, Config.Conf.Db.Password, Config.Conf.Db.Dbname)
+	databaseUrl := fmt.Sprintf("%v:%v@(%v:%v)/%v?charset=utf8&parseTime=True&loc=Local",
+		Config.Conf.Db.User, Config.Conf.Db.Password, Config.Conf.Db.Host, Config.Conf.Db.Port, Config.Conf.Db.Dbname)
 
 	DB, err = gorm.Open("mysql", databaseUrl)
 	if err != nil {

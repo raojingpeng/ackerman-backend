@@ -9,6 +9,8 @@ type databaseConfig struct {
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 	Dbname   string `mapstructure:"dbname"`
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
 }
 
 type logConfig struct {
