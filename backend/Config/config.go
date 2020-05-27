@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type databaseConfig struct {
+type mysqlConfig struct {
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 	Dbname   string `mapstructure:"dbname"`
@@ -19,8 +19,8 @@ type logConfig struct {
 }
 
 type config struct {
-	Db  databaseConfig `mapstructure:"database"`
-	Log logConfig      `mapstructure:"log"`
+	Mysql mysqlConfig `mapstructure:"mysql"`
+	Log   logConfig   `mapstructure:"log"`
 }
 
 var Conf config

@@ -2,9 +2,8 @@ package Models
 
 import (
 	"backend/Databases"
-	"backend/Middlewares"
 	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
+	"go/types"
 	"time"
 )
 
@@ -17,48 +16,64 @@ type User struct {
 	TokenExpiration *time.Time `gorm:"column:token_expiration"`
 }
 
+type Users []User
+
 func init() {
-	// Migrate the schema
-	Databases.DB.AutoMigrate(&User{})
+	if !Databases.Mysql.HasTable(&User{}) {
+		if err := Databases.Mysql.CreateTable(&User{}).Error; err != nil {
+			panic(err)
+		}
+	}
 }
 
 func (User) TableName() string {
 	return "user"
 }
 
-func (u *User) SetPassword(pwd string) {
-	pwdHash := hashAndSalt([]byte(pwd))
-	Databases.DB.Model(u).Update("password_hash", pwdHash)
+func (u *Users) Pagination(page int, pageSize int) (err error) {
+	err = Databases.Mysql.Offset((page - 1) * pageSize).Limit(pageSize).Find(u).Error
+	return
 }
 
-func (u *User) CheckPassword(pwd string) bool {
-	return comparePasswords(u.PasswordHash, []byte(pwd))
+func (u *User) QueryById(id int) (err error) {
+	err = Databases.Mysql.First(u, id).Error
+	return
 }
 
-func hashAndSalt(pwd []byte) string {
+func (u *User) QueryByFirst(query interface{}, args ...interface{}) (err error) {
+	var db *gorm.DB
 
-	// Use GenerateFromPassword to hash & salt pwd
-	// MinCost is just an integer constant provided by the bcrypt
-	// package along with DefaultCost & MaxCost.
-	// The cost can be any value you want provided it isn't lower
-	// than the MinCost (4)
-	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
-	if err != nil {
-		Middlewares.Log.Printf(err.Error())
-	}
-	// GenerateFromPassword returns a byte slice so we need to
-	// convert the bytes to a string and return it
-	return string(hash)
-}
-
-func comparePasswords(hashedPwd string, plainPwd []byte) bool {
-	// Since we'll be getting the hashed password from the DB it
-	// will be a string so we'll need to convert it to a byte slice
-	byteHash := []byte(hashedPwd)
-	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
-	if err != nil {
-		return false
+	switch query.(type) {
+	case types.Nil:
+		db = Databases.Mysql
+	default:
+		db = Databases.Mysql.Where(query, args...)
 	}
 
-	return true
+	err = db.First(u).Error
+	return
+}
+
+func (u *Users) QueryByFind(query interface{}, args ...interface{}) (err error) {
+	var db *gorm.DB
+
+	switch query.(type) {
+	case types.Nil:
+		db = Databases.Mysql
+	default:
+		db = Databases.Mysql.Where(query, args...)
+	}
+
+	err = db.Find(u).Error
+	return err
+}
+
+func (u *User) Insert() error {
+	err := Databases.Mysql.Create(u).Error
+	return err
+}
+
+func (u *User) Update(column string, value interface{}) error {
+	err := Databases.Mysql.Model(u).Update(column, value).Error
+	return err
 }

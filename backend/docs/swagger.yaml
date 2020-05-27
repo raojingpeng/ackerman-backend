@@ -1,42 +1,140 @@
+definitions:
+  Controllers.Resp:
+    properties:
+      data:
+        type: object
+      error:
+        type: string
+      status:
+        type: integer
+    type: object
+  Services.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
 host: localhost:8080
 info:
   contact:
     email: withrjp@gmail.com
     name: Ackerman
     url: www.withrjp.xyz
-  description: Api Document By Swagger
+  description: Ackerman Blog Api Documents
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: Ackerman Blog Backend
+  title: Ackerman Blog
   version: "1.0"
 paths:
   /api/ping:
     get:
       consumes:
       - application/json
-      description: do ping
+      description: Do ping
       produces:
       - application/json
       responses:
         "200":
-          description: pong
+          description: OK
           schema:
             type: string
         "400":
-          description: ok
-          schema:
-            type: string
-        "404":
-          description: ok
-          schema:
-            type: string
-        "500":
-          description: ok
+          description: Bad Request
           schema:
             type: string
       summary: ping example
       tags:
       - example
+  /api/users:
+    get:
+      consumes:
+      - application/json
+      description: 用户分页查询
+      parameters:
+      - description: page
+        in: query
+        minimum: 1
+        name: page
+        required: true
+        type: integer
+      - description: page size
+        in: query
+        maximum: 100
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Controllers.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 用户集合查询
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: 博客用户注册接口
+      parameters:
+      - description: user info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Services.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Controllers.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 用户注册
+      tags:
+      - user
+  /api/users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户id查询用户信息
+      operationId: get-string-by-int
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Controllers.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 用户信息查询
+      tags:
+      - user
 swagger: "2.0"

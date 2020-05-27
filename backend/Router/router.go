@@ -1,6 +1,7 @@
 package Router
 
 import (
+	"backend/Controllers"
 	"backend/Middlewares"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -18,7 +19,10 @@ func InitRouter() {
 
 	api := router.Group("/api")
 	{
-		api.GET("/ping", ping)
+		api.GET("/ping", Controllers.Ping)
+		api.GET("/users/:id", Controllers.GetUser)
+		api.POST("/users", Controllers.UserRegister)
+		api.GET("/users", Controllers.GetUsers)
 	}
 
 	_ = router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
