@@ -58,7 +58,7 @@
                 "tags": [
                     "user"
                 ],
-                "summary": "用户集合查询",
+                "summary": "用户分页查询",
                 "parameters": [
                     {
                         "minimum": 1,
@@ -81,7 +81,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Controllers.Resp"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Services.UserResp"
+                            }
                         }
                     },
                     "400": {
@@ -111,7 +114,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Services.User"
+                            "$ref": "#/definitions/Services.CreateUserParams"
                         }
                     }
                 ],
@@ -168,6 +171,51 @@
                         }
                     }
                 }
+            },
+            "put": {
+                "description": "博客用户更新接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "更新用户信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "user update form",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Services.UpdateUserParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Controllers.Resp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     },
@@ -175,33 +223,64 @@
         "Controllers.Resp": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
                 "data": {
                     "type": "object"
                 },
-                "error": {
+                "msg": {
                     "type": "string"
-                },
-                "status": {
-                    "type": "integer"
                 }
             }
         },
-        "Services.User": {
+        "Services.CreateUserParams": {
             "type": "object",
             "required": [
                 "email",
-                "password",
-                "username"
+                "name",
+                "password"
             ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
-                "password": {
+                "name": {
                     "type": "string"
                 },
-                "username": {
+                "password": {
                     "type": "string"
+                }
+            }
+        },
+        "Services.UpdateUserParams": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "Services.UserResp": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 }
             }
         }

@@ -1,25 +1,45 @@
 definitions:
   Controllers.Resp:
     properties:
+      code:
+        type: integer
       data:
         type: object
-      error:
+      msg:
         type: string
-      status:
-        type: integer
     type: object
-  Services.User:
+  Services.CreateUserParams:
     properties:
       email:
         type: string
-      password:
+      name:
         type: string
-      username:
+      password:
         type: string
     required:
     - email
+    - name
     - password
-    - username
+    type: object
+  Services.UpdateUserParams:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - id
+    type: object
+  Services.UserResp:
+    properties:
+      Name:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -78,12 +98,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Controllers.Resp'
+            items:
+              $ref: '#/definitions/service.UserResp'
+            type: array
         "400":
           description: Bad Request
           schema:
             type: string
-      summary: 用户集合查询
+      summary: 用户分页查询
       tags:
       - user
     post:
@@ -96,14 +118,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/Services.User'
+          $ref: '#/definitions/service.CreateUserParams'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Controllers.Resp'
+            $ref: '#/definitions/controller.Resp'
         "400":
           description: Bad Request
           schema:
@@ -129,12 +151,42 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Controllers.Resp'
+            $ref: '#/definitions/controller.Resp'
         "400":
           description: Bad Request
           schema:
             type: string
       summary: 用户信息查询
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: 博客用户更新接口
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: user update form
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateUserParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 更新用户信息
       tags:
       - user
 swagger: "2.0"

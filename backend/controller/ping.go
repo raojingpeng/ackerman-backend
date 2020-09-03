@@ -1,4 +1,4 @@
-package Controllers
+package controller
 
 import "github.com/gin-gonic/gin"
 
@@ -10,7 +10,7 @@ import "github.com/gin-gonic/gin"
 // @Produce json
 // @Success 200 {string} string
 // @Failure 400 {string} string
-// @Router /api/ping [get]
+// @routers /api/ping [get]
 func Ping(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "pong",

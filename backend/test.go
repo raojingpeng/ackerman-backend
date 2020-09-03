@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	//user := Models.User{
+	//user := models.User{
 	//	Username: "raojingpeng",
 	//	Email:    "withrjp@gmail.com",
 	//}
@@ -13,7 +13,7 @@ func main() {
 	// 更新单个属性（如果更改
 	//user.SetPassword("rjp1994.")
 	//	//fmt.Print("ok")
-	//	user2 := Models.User{}
+	//	user2 := models.User{}
 	//	Databases.DB.Where("username = ?", "raojingpeng").First(&user2)
 	//	fmt.Print(user2)
 	//	fmt.Println(user2.CheckPassword("rjp1994"))

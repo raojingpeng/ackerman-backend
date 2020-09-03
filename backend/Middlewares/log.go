@@ -1,7 +1,7 @@
 package Middlewares
 
 import (
-	"backend/Config"
+	"backend/conf"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lestrrat-go/file-rotatelogs"
@@ -22,7 +22,7 @@ func init() {
 // 参考 https://www.cnblogs.com/xinliangcoder/p/11212573.html
 func LoggerMiddleware() gin.HandlerFunc {
 	// 日志文件
-	fileName := path.Join(Config.Conf.Log.LogFilePath, Config.Conf.Log.LogFileName)
+	fileName := path.Join(conf.Conf.Log.LogFilePath, conf.Conf.Log.LogFileName)
 	// 写入文件
 	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {

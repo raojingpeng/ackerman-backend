@@ -1,11 +1,11 @@
-package Config
+package conf
 
 import (
 	"fmt"
 	"github.com/spf13/viper"
 )
 
-type mysqlConfig struct {
+type mysql struct {
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 	Dbname   string `mapstructure:"dbname"`
@@ -18,16 +18,15 @@ type logConfig struct {
 	LogFileName string `mapstructure:"logFileName"`
 }
 
-type config struct {
-	Mysql mysqlConfig `mapstructure:"mysql"`
-	Log   logConfig   `mapstructure:"log"`
+type conf struct {
+	Mysql     mysql     `mapstructure:"mysql"`
+	LogConfig logConfig `mapstructure:"log"`
 }
 
-var Conf config
+var Conf conf
 
 func init() {
-	viper.SetConfigName("config")
-	viper.SetConfigType("toml")
+	viper.SetConfigFile("config.toml")
 	viper.AddConfigPath(".")
 
 	err := viper.ReadInConfig() // Find and read the config file
