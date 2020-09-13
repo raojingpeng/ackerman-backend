@@ -1,8 +1,9 @@
 package routers
 
 import (
-	"backend/controller"
 	"backend/Middlewares"
+	"backend/routers/api"
+	"backend/routers/api/v1"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -16,14 +17,14 @@ func InitRouter() {
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	router.GET("/ping", api.Ping)
 
-	api := router.Group("/api")
+	apiv1 := router.Group("/api/v1")
 	{
-		api.GET("/ping", controller.Ping)
-		api.GET("/users/:id", controller.GetUser)
-		api.POST("/users", controller.UserRegister)
-		api.GET("/users", controller.GetUsers)
-		api.PUT("/users/:id", controller.UpdateUser)
+		apiv1.GET("/users/:id", v1.GetUser)
+		apiv1.GET("/users", v1.GetUsers)
+		apiv1.POST("/users", v1.CreateUser)
+		apiv1.PUT("/users/:id", v1.UpdateUser)
 	}
 
 	_ = router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")

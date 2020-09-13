@@ -68,7 +68,7 @@ paths:
           schema:
             type: string
         "400":
-          description: Bad Request
+          description: Bad request
           schema:
             type: string
       summary: ping example
@@ -102,7 +102,7 @@ paths:
               $ref: '#/definitions/service.UserResp'
             type: array
         "400":
-          description: Bad Request
+          description: Bad request
           schema:
             type: string
       summary: 用户分页查询
@@ -127,7 +127,7 @@ paths:
           schema:
             $ref: '#/definitions/controller.Resp'
         "400":
-          description: Bad Request
+          description: Bad request
           schema:
             type: string
       summary: 用户注册
@@ -153,7 +153,7 @@ paths:
           schema:
             $ref: '#/definitions/controller.Resp'
         "400":
-          description: Bad Request
+          description: Bad request
           schema:
             type: string
       summary: 用户信息查询
@@ -183,7 +183,7 @@ paths:
           schema:
             $ref: '#/definitions/controller.Resp'
         "400":
-          description: Bad Request
+          description: Bad request
           schema:
             type: string
       summary: 更新用户信息

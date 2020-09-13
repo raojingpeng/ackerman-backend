@@ -1,4 +1,4 @@
-package controller
+package v1
 
 import (
 	"backend/pkg/app"
@@ -9,8 +9,6 @@ import (
 	"net/http"
 )
 
-
-
 // GetUser godoc
 // @Summary 用户查询
 // @Description 根据用户id查询用户信息
@@ -20,9 +18,9 @@ import (
 // @Param id path int true "user id"
 // @Success 200 {object} app.Resp
 // @Failure 400 {object} app.Resp
-// @router /api/users/{id} [get]
+// @Router /api/v1/users/{id} [get]
 func GetUser(c *gin.Context) {
-	var param UserId
+	var param service.UserIdStruct
 	if err := c.ShouldBindUri(&param); err != nil {
 		app.RespHandler(c, http.StatusBadRequest, e.INVALID_PARAMS, nil)
 		return
@@ -97,7 +95,7 @@ func checkUser(username string, email string) error {
 // @Success 200 {object} Resp
 // @Failure 400 {object} Resp
 // @router /api/users [post]
-func AddUser(c *gin.Context) {
+func CreateUser(c *gin.Context) {
 	var u service.CreateUserParams
 
 	if err := c.ShouldBindJSON(&u); err != nil {

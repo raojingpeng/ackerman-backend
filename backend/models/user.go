@@ -2,24 +2,15 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"time"
 )
 
 type User struct {
 	gorm.Model
-	Name            string     `gorm:"column:name;size:64;unique_index"`
-	Email           string     `gorm:"column:email;type:varchar(120);unique_index"`
-	PasswordHash    string     `gorm:"column:password_hash;type:varchar(128)"`
-	Token           string     `gorm:"column:token;size:32"`
-	TokenExpiration *time.Time `gorm:"column:token_expiration"`
-}
-
-func init() {
-	if !db.HasTable(&User{}) {
-		if err := db.CreateTable(&User{}).Error; err != nil {
-			panic(err)
-		}
-	}
+	UserName     string `gorm:"column:username;size:64;unique_index"`
+	PasswordHash string `gorm:"column:password_hash;type:varchar(128)"`
+	NickName     string `gorm:"column:nickname;size:64"`
+	Avatar       string `gorm:"column:avatar;size:1000"`
+	Email        string `gorm:"column:email;type:varchar(120);unique_index"`
 }
 
 func ExistUserById(id int) (bool, error) {
@@ -51,13 +42,15 @@ func GetUsers(page, pageSize int) ([]*User, error) {
 	return users, nil
 }
 
-func CreateUser(data map[string]interface{}) error {
-	user := User{
-		Name:         data["name"].(string),
-		Email:        data["email"].(string),
-		PasswordHash: data["password_hash"].(string),
+func (u *User) Create() error {
+	if err := db.Create(&u).Error; err != nil {
+		return err
 	}
-	if err := db.Create(&user).Error; err != nil {
+	return nil
+}
+
+func UpdateUser(id int, data interface{}) error {
+	if err := db.First(&User{}, id).Updates(data).Error; err != nil {
 		return err
 	}
 	return nil

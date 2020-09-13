@@ -22,8 +22,5 @@ func Setup() {
 	if err != nil {
 		panic("Failed to connect database")
 	}
-	if db.Error != nil {
-		panic(fmt.Errorf("Database e: %s \n", db.Error))
-	}
 	db.SingularTable(true)
 }

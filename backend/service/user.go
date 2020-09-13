@@ -7,9 +7,20 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type UserIdStruct struct {
+	Id int `json:"id" binding:"required,gt=0"`
+}
+
+type CreateUserStruct struct {
+	UserName string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+	NickName string `json:"nickname" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+}
+
 type UserResp struct {
 	Id    uint   `json:"id"`
-	Name  string `json:"Name"`
+	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
@@ -17,11 +28,7 @@ func ExistUserById(id int) (bool, error) {
 	return models.ExistUserById(id)
 }
 
-type GetUserParam struct {
-	Id int `uri:"id" binding:"required,gte=1"`
-}
-
-func (id *UserId) GetUser (*UserResp, error) {
+func GetUser(id int) (*UserResp, error) {
 	user, err := models.GetUser(id)
 	if err != nil {
 		return nil, err
@@ -29,55 +36,44 @@ func (id *UserId) GetUser (*UserResp, error) {
 
 	return &UserResp{
 		Id:    user.ID,
-		Name:  user.Name,
+		Name:  user.UserName,
 		Email: user.Email,
 	}, nil
 }
 
-type GetUsersParam struct {
-	Page     int `form:"page" binding:"required,gte=1"`
-	PageSize int `form:"page_size" binding:"required,gte=5,lte=100"`
-}
-
-func GetUsers(page, pageSize int) (*[]UserResp, error) {
+func GetUsers(page, pageSize int) ([]*UserResp, error) {
 	users, err := models.GetUsers(page, pageSize)
 	if err != nil {
 		return nil, err
 	}
 
-	var userResp []UserResp
+	var userResp []*UserResp
 	for _, v := range users {
-		userResp = append(userResp, UserResp{
+		userResp = append(userResp, &UserResp{
 			Id:    v.ID,
-			Name:  v.Name,
+			Name:  v.UserName,
 			Email: v.Email,
 		})
 	}
-	return &userResp, nil
+	return userResp, nil
 }
 
-type AddUserParam struct {
-	Name     string `json:"user" binding:"required"`
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
-}
-
-func AddUser(param *AddUserParam) (*UserResp, error) {
-	pwdHash := hashAndSalt([]byte(param.Password))
+func (service *CreateUserStruct) Create() (*UserResp, error) {
+	pwdHash := hashAndSalt([]byte(service.Password))
 
 	var user = models.User{
-		Name:         params.Name,
-		Email:        params.Email,
+		UserName:     service.UserName,
+		Email:        service.Email,
+		NickName:     service.NickName,
 		PasswordHash: pwdHash,
 	}
-
-	if err := user.Insert(); err != nil {
+	if err := user.Create(); err != nil {
 		return nil, err
 	}
 
 	return &UserResp{
 		Id:    user.ID,
-		Name:  user.Name,
+		Name:  user.UserName,
 		Email: user.Email,
 	}, nil
 }

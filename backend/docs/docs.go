@@ -55,7 +55,7 @@ var doc = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
                             "type": "string"
                         }
@@ -105,7 +105,7 @@ var doc = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
                             "type": "string"
                         }
@@ -143,7 +143,7 @@ var doc = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
                             "type": "string"
                         }
@@ -182,7 +182,7 @@ var doc = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
                             "type": "string"
                         }
@@ -227,7 +227,7 @@ var doc = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
                             "type": "string"
                         }
