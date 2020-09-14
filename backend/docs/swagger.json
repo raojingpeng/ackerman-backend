@@ -1,288 +1,288 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "description": "Ackerman Blog Api Documents",
-        "title": "Ackerman Blog",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "Ackerman",
-            "url": "www.withrjp.xyz",
-            "email": "withrjp@gmail.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "1.0"
+  "swagger": "2.0",
+  "info": {
+    "description": "Ackerman Blog Api Documents",
+    "title": "Ackerman Blog",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "Ackerman",
+      "url": "www.withrjp.xyz",
+      "email": "withrjp@gmail.com"
     },
-    "host": "localhost:8080",
-    "paths": {
-        "/api/ping": {
-            "get": {
-                "description": "Do ping",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "ping example",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/users": {
-            "get": {
-                "description": "用户分页查询",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "用户分页查询",
-                "parameters": [
-                    {
-                        "minimum": 1,
-                        "type": "integer",
-                        "description": "page",
-                        "name": "page",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "maximum": 100,
-                        "type": "integer",
-                        "description": "page size",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Services.UserResp"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "博客用户注册接口",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "用户注册",
-                "parameters": [
-                    {
-                        "description": "user info",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Services.CreateUserParams"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Controllers.Resp"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/users/{id}": {
-            "get": {
-                "description": "根据用户id查询用户信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "用户信息查询",
-                "operationId": "get-string-by-int",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "user id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Controllers.Resp"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "博客用户更新接口",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "更新用户信息",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "user id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "user update form",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Services.UpdateUserParams"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Controllers.Resp"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        }
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "definitions": {
-        "Controllers.Resp": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "object"
-                },
-                "msg": {
-                    "type": "string"
-                }
+    "version": "1.0"
+  },
+  "host": "localhost:8080",
+  "paths": {
+    "/api/ping": {
+      "get": {
+        "description": "Do ping",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "example"
+        ],
+        "summary": "ping example",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
             }
-        },
-        "Services.CreateUserParams": {
-            "type": "object",
-            "required": [
-                "email",
-                "name",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
             }
-        },
-        "Services.UpdateUserParams": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "Services.UserResp": {
-            "type": "object",
-            "properties": {
-                "Name": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                }
-            }
+          }
         }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "description": "用户分页查询",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "summary": "用户分页查询",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "description": "page",
+            "name": "page",
+            "in": "query",
+            "required": true
+          },
+          {
+            "maximum": 100,
+            "type": "integer",
+            "description": "page size",
+            "name": "page_size",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Services.UserResp"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "博客用户注册接口",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "summary": "用户注册",
+        "parameters": [
+          {
+            "description": "user info",
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Services.CreateUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Controllers.Resp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "description": "根据用户id查询用户信息",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "summary": "用户信息查询",
+        "operationId": "get-string-by-int",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "user id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Controllers.Resp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "博客用户更新接口",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "summary": "更新用户信息",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "user id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "user update form",
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Services.UpdateUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Controllers.Resp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "Controllers.Resp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "object"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "Services.CreateUserParams": {
+      "type": "object",
+      "required": [
+        "email",
+        "name",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Services.UpdateUserParams": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Services.UserResp": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        }
+      }
+    }
+  }
 }

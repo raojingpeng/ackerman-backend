@@ -1,4 +1,4 @@
-package Middlewares
+package middlewares
 
 import (
 	"backend/conf"

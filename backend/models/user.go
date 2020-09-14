@@ -13,13 +13,12 @@ type User struct {
 	Email        string `gorm:"column:email;type:varchar(120);unique_index"`
 }
 
-func ExistUserById(id int) (bool, error) {
-	var user User
-	if err := db.First(&user, id).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return false, nil
+func ExistUser(data interface{}) (bool, error) {
+	if err := db.First(&User{}).Where(data).Error; err != nil {
+		if err != gorm.ErrRecordNotFound {
+			return false, err
 		}
-		return false, err
+		return false, nil
 	}
 	return true, nil
 }

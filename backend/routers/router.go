@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"backend/Middlewares"
+	"backend/middlewares"
 	"backend/routers/api"
 	"backend/routers/api/v1"
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ import (
 
 func InitRouter() {
 	router := gin.New()
-	router.Use(Middlewares.Cors()) // Cors
+	router.Use(middlewares.Cors()) // Cors
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 

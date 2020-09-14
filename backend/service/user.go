@@ -1,14 +1,13 @@
 package service
 
 import (
-	"backend/Middlewares"
+	"backend/middlewares"
 	"backend/models"
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type UserIdStruct struct {
-	Id int `json:"id" binding:"required,gt=0"`
+	Id int `uri:"id" binding:"required,gt=0"`
 }
 
 type CreateUserStruct struct {
@@ -18,14 +17,22 @@ type CreateUserStruct struct {
 	Email    string `json:"email" binding:"required,email"`
 }
 
+type UpdateUserStruct struct {
+	UserIdStruct
+	UserName string `json:"username" binding:"-"`
+	NickName string `json:"nickname" binding:"-"`
+	Avatar   string `json:"avatar" binding:"-"`
+	Email    string `json:"email" binding:"omitempty,email"`
+}
+
 type UserResp struct {
 	Id    uint   `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
-func ExistUserById(id int) (bool, error) {
-	return models.ExistUserById(id)
+func ExistUser(data map[string]interface{}) (bool, error) {
+	return models.ExistUser(data)
 }
 
 func GetUser(id int) (*UserResp, error) {
@@ -78,32 +85,17 @@ func (service *CreateUserStruct) Create() (*UserResp, error) {
 	}, nil
 }
 
-func UserExist(query map[string]interface{}) bool {
-	var user models.User
-	if err := db.Where(query).Find(user).Error; gorm.IsRecordNotFoundError(err) {
-		return false
-	}
-	return true
-}
-
-type UpdateUserParams struct {
-	Id    int    `uri:"id" binding:"required"`
-	Name  string `json:"name" binding:"-"`
-	Email string `json:"email" binding:"omitempty,email"`
-}
-
-func UpdateUser(params *UpdateUserParams) error {
-	var user models.User
-	if err := db.First(&user, params.Id).Error; err != nil {
+func (service *UpdateUserStruct) Update() error {
+	if err := models.UpdateUser(service.Id, map[string]interface{}{
+		"username": service.UserName,
+		"nickname": service.NickName,
+		"avatar":   service.Avatar,
+		"email":    service.Email,
+	}); err != nil {
 		return err
 	}
 
-	err := db.Model(&user).Updates(&models.User{
-		Name:  params.Name,
-		Email: params.Email,
-	}).Error
-
-	return err
+	return nil
 }
 
 func hashAndSalt(pwd []byte) string {
@@ -115,7 +107,7 @@ func hashAndSalt(pwd []byte) string {
 	// than the MinCost (4)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
-		Middlewares.Log.Printf(err.Error())
+		middlewares.Log.Printf(err.Error())
 	}
 	// GenerateFromPassword returns a byte slice so we need to
 	// convert the bytes to a string and return it

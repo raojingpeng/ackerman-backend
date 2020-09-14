@@ -17,9 +17,9 @@ definitions:
       password:
         type: string
     required:
-    - email
-    - name
-    - password
+      - email
+      - name
+      - password
     type: object
   Services.UpdateUserParams:
     properties:
@@ -30,7 +30,7 @@ definitions:
       name:
         type: string
     required:
-    - id
+      - id
     type: object
   Services.UserResp:
     properties:
@@ -58,10 +58,10 @@ paths:
   /api/ping:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Do ping
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -73,27 +73,27 @@ paths:
             type: string
       summary: ping example
       tags:
-      - example
+        - example
   /api/users:
     get:
       consumes:
-      - application/json
+        - application/json
       description: 用户分页查询
       parameters:
-      - description: page
-        in: query
-        minimum: 1
-        name: page
-        required: true
-        type: integer
-      - description: page size
-        in: query
-        maximum: 100
-        name: page_size
-        required: true
-        type: integer
+        - description: page
+          in: query
+          minimum: 1
+          name: page
+          required: true
+          type: integer
+        - description: page size
+          in: query
+          maximum: 100
+          name: page_size
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -107,20 +107,20 @@ paths:
             type: string
       summary: 用户分页查询
       tags:
-      - user
+        - user
     post:
       consumes:
-      - application/json
+        - application/json
       description: 博客用户注册接口
       parameters:
-      - description: user info
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/service.CreateUserParams'
+        - description: user info
+          in: body
+          name: user
+          required: true
+          schema:
+            $ref: '#/definitions/service.CreateUserParams'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -132,21 +132,21 @@ paths:
             type: string
       summary: 用户注册
       tags:
-      - user
+        - user
   /api/users/{id}:
     get:
       consumes:
-      - application/json
+        - application/json
       description: 根据用户id查询用户信息
       operationId: get-string-by-int
       parameters:
-      - description: user id
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: user id
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -158,25 +158,25 @@ paths:
             type: string
       summary: 用户信息查询
       tags:
-      - user
+        - user
     put:
       consumes:
-      - application/json
+        - application/json
       description: 博客用户更新接口
       parameters:
-      - description: user id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: user update form
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/service.UpdateUserParams'
+        - description: user id
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: user update form
+          in: body
+          name: user
+          required: true
+          schema:
+            $ref: '#/definitions/service.UpdateUserParams'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -188,5 +188,5 @@ paths:
             type: string
       summary: 更新用户信息
       tags:
-      - user
+        - user
 swagger: "2.0"
