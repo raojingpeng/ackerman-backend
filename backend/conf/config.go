@@ -13,14 +13,14 @@ type mysql struct {
 	Port     int    `mapstructure:"port"`
 }
 
-type logConfig struct {
+type log struct {
 	LogFilePath string `mapstructure:"logFilePath"`
 	LogFileName string `mapstructure:"logFileName"`
 }
 
 type conf struct {
-	Mysql     mysql     `mapstructure:"mysql"`
-	LogConfig logConfig `mapstructure:"log"`
+	Mysql mysql `mapstructure:"mysql"`
+	Log   log   `mapstructure:"log"`
 }
 
 var Conf conf
