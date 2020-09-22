@@ -17,7 +17,7 @@ func InitRouter() {
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-	router.GET("/ping", api.Ping)
+	router.GET("/api/ping", api.Ping)
 
 	apiv1 := router.Group("/api/v1")
 	{
