@@ -3,6 +3,8 @@ package service
 import (
 	"backend/middlewares"
 	"backend/models"
+	"backend/pkg/util"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -68,10 +70,13 @@ func GetUsers(page, pageSize int) ([]*UserResp, error) {
 func (service *CreateUserStruct) Create() (*UserResp, error) {
 	pwdHash := hashAndSalt([]byte(service.Password))
 
+	avatar := fmt.Sprintf("https://www.gravatar.com/avatar/{}?d=identicon&s=%s", util.EncodeMD5(service.Email))
+
 	var user = models.User{
 		UserName:     service.UserName,
 		Email:        service.Email,
 		NickName:     service.NickName,
+		Avatar:       avatar,
 		PasswordHash: pwdHash,
 	}
 	if err := user.Create(); err != nil {

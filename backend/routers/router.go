@@ -5,8 +5,8 @@ import (
 	"backend/routers/api"
 	"backend/routers/api/v1"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func InitRouter() {
