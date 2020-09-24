@@ -14,7 +14,7 @@ type User struct {
 }
 
 func ExistUser(data interface{}) (bool, error) {
-	if err := db.First(&User{}).Where(data).Error; err != nil {
+	if err := db.Where(data).First(&User{}).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
 			return false, err
 		}
@@ -34,7 +34,7 @@ func GetUser(id int) (*User, error) {
 
 func GetUsers(page, pageSize int) ([]*User, error) {
 	var users []*User
-	err := db.Offset((page - 1) * pageSize).Limit(pageSize).Find(users).Error
+	err := db.Offset((page - 1) * pageSize).Limit(pageSize).Find(&users).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}

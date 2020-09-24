@@ -30,14 +30,10 @@ definitions:
         type: string
       email:
         type: string
-      id:
-        type: integer
       nickname:
         type: string
       username:
         type: string
-    required:
-    - id
     type: object
 host: localhost:8080
 info:
@@ -68,6 +64,7 @@ paths:
       - description: page size
         in: query
         maximum: 100
+        minimum: 5
         name: page_size
         required: true
         type: integer
@@ -118,6 +115,7 @@ paths:
       parameters:
       - description: user id
         in: path
+        minimum: 1
         name: id
         required: true
         type: integer

@@ -12,6 +12,7 @@ var MsgFlags = map[int]string{
 	ERROR_CREATE_USER_FAIL:      "创建用户失败",
 	ERROR_QUERY_USER_FAIL:       "查询用户失败",
 	ERROR_UPDATE_USER_FAIL:      "更新用户失败",
+	ERROR_EXIST_EMAIL:           "邮箱已存在",
 	//ERROR_EXIST_TAG:                 "已存在该标签名称",
 	//ERROR_EXIST_TAG_FAIL:            "获取已存在标签失败",
 	//ERROR_NOT_EXIST_TAG:             "该标签不存在",

@@ -19,8 +19,8 @@ type CreateUserStruct struct {
 	Email    string `json:"email" binding:"required,email"`
 }
 
+// JSON and URI 不能在一个结构体验证, 详见 https://github.com/gin-gonic/gin/issues/1824
 type UpdateUserStruct struct {
-	UserIdStruct
 	UserName string `json:"username" binding:"-"`
 	NickName string `json:"nickname" binding:"-"`
 	Avatar   string `json:"avatar" binding:"-"`
@@ -28,9 +28,10 @@ type UpdateUserStruct struct {
 }
 
 type UserResp struct {
-	Id    uint   `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Id     uint   `json:"id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+	Avatar string `json:"avatar"`
 }
 
 func ExistUser(data map[string]interface{}) (bool, error) {
@@ -44,9 +45,10 @@ func GetUser(id int) (*UserResp, error) {
 	}
 
 	return &UserResp{
-		Id:    user.ID,
-		Name:  user.UserName,
-		Email: user.Email,
+		Id:     user.ID,
+		Name:   user.UserName,
+		Email:  user.Email,
+		Avatar: user.Avatar,
 	}, nil
 }
 
@@ -59,18 +61,18 @@ func GetUsers(page, pageSize int) ([]*UserResp, error) {
 	var userResp []*UserResp
 	for _, v := range users {
 		userResp = append(userResp, &UserResp{
-			Id:    v.ID,
-			Name:  v.UserName,
-			Email: v.Email,
+			Id:     v.ID,
+			Name:   v.UserName,
+			Email:  v.Email,
+			Avatar: v.Avatar,
 		})
 	}
 	return userResp, nil
 }
 
-func (service *CreateUserStruct) Create() (*UserResp, error) {
+func CreateUser(service *CreateUserStruct) (*UserResp, error) {
 	pwdHash := hashAndSalt([]byte(service.Password))
-
-	avatar := fmt.Sprintf("https://www.gravatar.com/avatar/{}?d=identicon&s=%s", util.EncodeMD5(service.Email))
+	avatar := fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=identicon", util.EncodeMD5(service.Email))
 
 	var user = models.User{
 		UserName:     service.UserName,
@@ -90,8 +92,8 @@ func (service *CreateUserStruct) Create() (*UserResp, error) {
 	}, nil
 }
 
-func (service *UpdateUserStruct) Update() error {
-	if err := models.UpdateUser(service.Id, map[string]interface{}{
+func UpdateUser(id int, service *UpdateUserStruct) error {
+	if err := models.UpdateUser(id, map[string]interface{}{
 		"username": service.UserName,
 		"nickname": service.NickName,
 		"avatar":   service.Avatar,

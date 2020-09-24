@@ -14,7 +14,7 @@ import (
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param id path int true "user id"
+// @Param id path int true "user id" mininum(1)
 // @Success 200 {object} app.Resp
 // @Failure 500 {object} app.Resp
 // @Router /api/v1/users/{id} [get]
@@ -49,7 +49,7 @@ func GetUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param page query int true "page" mininum(1)
-// @Param page_size query int true "page size" maxinum(100)
+// @Param page_size query int true "page size" mininum(5) maxinum(100)
 // @Success 200 {object} app.Resp
 // @Failure 500 {object} app.Resp
 // @router /api/v1/users [get]
@@ -94,7 +94,17 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	resp, err := s.Create()
+	result, err = service.ExistUser(map[string]interface{}{"email": s.Email})
+	if err != nil {
+		app.RespHandler(c, http.StatusInternalServerError, e.ERROR_QUERY_USER_FAIL, nil)
+		return
+	}
+	if result {
+		app.RespHandler(c, http.StatusOK, e.ERROR_EXIST_EMAIL, nil)
+		return
+	}
+
+	resp, err := service.CreateUser(&s)
 	if err != nil {
 		app.RespHandler(c, http.StatusInternalServerError, e.ERROR_CREATE_USER_FAIL, nil)
 		return
@@ -114,9 +124,14 @@ func CreateUser(c *gin.Context) {
 // @Failure 500 {object} app.Resp
 // @router /api/v1/users/{id} [put]
 func UpdateUser(c *gin.Context) {
-	var s service.UpdateUserStruct
+	var id service.UserIdStruct
+	if err := c.ShouldBindUri(&id); err != nil {
+		app.RespHandler(c, http.StatusBadRequest, e.INVALID_PARAMS, nil)
+		return
+	}
 
-	if err := c.ShouldBindJSON(&s); err != nil {
+	var s service.UpdateUserStruct
+	if err := c.ShouldBind(&s); err != nil {
 		app.RespHandler(c, http.StatusBadRequest, e.INVALID_PARAMS, nil)
 		return
 	}
@@ -131,7 +146,17 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if err := s.Update(); err != nil {
+	result, err = service.ExistUser(map[string]interface{}{"email": s.Email})
+	if err != nil {
+		app.RespHandler(c, http.StatusInternalServerError, e.ERROR_QUERY_USER_FAIL, nil)
+		return
+	}
+	if result {
+		app.RespHandler(c, http.StatusOK, e.ERROR_EXIST_EMAIL, nil)
+		return
+	}
+
+	if err := service.UpdateUser(id.Id, &s); err != nil {
 		app.RespHandler(c, http.StatusInternalServerError, e.ERROR_UPDATE_USER_FAIL, nil)
 		return
 	}

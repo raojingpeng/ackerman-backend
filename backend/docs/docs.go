@@ -57,6 +57,7 @@ var doc = `{
                     },
                     {
                         "maximum": 100,
+                        "minimum": 5,
                         "type": "integer",
                         "description": "page size",
                         "name": "page_size",
@@ -133,6 +134,7 @@ var doc = `{
                 "summary": "用户查询",
                 "parameters": [
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "user id",
                         "name": "id",
@@ -242,18 +244,12 @@ var doc = `{
         },
         "service.UpdateUserStruct": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
                 "avatar": {
                     "type": "string"
                 },
                 "email": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "nickname": {
                     "type": "string"

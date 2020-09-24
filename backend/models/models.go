@@ -23,5 +23,5 @@ func Setup() {
 		panic("Failed to connect database")
 	}
 	db.SingularTable(true)
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&User{}, &Article{})
 }
