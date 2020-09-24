@@ -49,6 +49,25 @@ info:
   title: Ackerman Blog
   version: "1.0"
 paths:
+  /api/ping:
+    get:
+      consumes:
+      - application/json
+      description: Do ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: ping example
+      tags:
+      - example
   /api/v1/users:
     get:
       consumes:
