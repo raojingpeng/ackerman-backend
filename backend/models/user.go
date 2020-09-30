@@ -23,7 +23,15 @@ func ExistUser(data interface{}) (bool, error) {
 	return true, nil
 }
 
-func GetUser(id int) (*User, error) {
+func GetUser(data interface{}) (*User, error) {
+	var user User
+	if err := db.Where(data).First(&user).Error; err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func GetUserById(id int) (*User, error) {
 	var user User
 	err := db.First(&user, id).Error
 	if err != nil && err != gorm.ErrRecordNotFound {

@@ -18,14 +18,19 @@ type log struct {
 	LogFileName string `mapstructure:"logFileName"`
 }
 
+type jwt struct {
+	Secret string `mapstructure:"secret"`
+}
+
 type conf struct {
 	Mysql mysql `mapstructure:"mysql"`
 	Log   log   `mapstructure:"log"`
+	Jwt   jwt   `mapstructure:"jwt"`
 }
 
 var Conf conf
 
-func init() {
+func Setup() {
 	viper.SetConfigFile("config.toml")
 	viper.AddConfigPath(".")
 

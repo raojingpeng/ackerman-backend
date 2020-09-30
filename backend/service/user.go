@@ -39,7 +39,7 @@ func ExistUser(data map[string]interface{}) (bool, error) {
 }
 
 func GetUser(id int) (*UserResp, error) {
-	user, err := models.GetUser(id)
+	user, err := models.GetUserById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -103,6 +103,20 @@ func UpdateUser(id int, service *UpdateUserStruct) error {
 	}
 
 	return nil
+}
+
+func CheckAuth(username, password string) (bool, error) {
+	user, err := models.GetUser(map[string]interface{}{
+		"username": username,
+	})
+	if err != nil {
+		return false, err
+	}
+	passwordHash := []byte(password)
+	if user == nil || comparePasswords(user.PasswordHash, passwordHash) {
+		return false, nil
+	}
+	return true, nil
 }
 
 func hashAndSalt(pwd []byte) string {
